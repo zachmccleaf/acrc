@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { ApplicationState } from '../store';
 import * as StravaDataState from '../store/Strava';
+import * as dotenv from "dotenv";
+//dotenv.config();
 
 
 /*
@@ -24,7 +26,7 @@ Component
 */
 
 export class StravaData extends React.Component<StravaDataProps, {}> {
-
+    
     public render() {
         return (
             <table className='table'>
@@ -67,8 +69,17 @@ Private Methods
 
 const _getData = () => {
     var strava = require('strava-v3');
-    strava.athletes.get({id:16335598},function(err,payload,limits) {
-        console.log('payload', payload);
+    // strava.athlete.get({id:16335598},function(err,payload,limits) {
+    //     console.log('payload', payload);
+    // });
+//    dotenv.config();
+  //  dotenv.config({ path: `${__dirname}/../../.env` });
+    console.log(process.env);
+    var strava = require('strava-v3');
+    strava.athlete.get({'access_token': process.env.STRAVA_ACCESS_TOKEN},function(err,payload,limits) {
+    console.log(payload);
     });
 };
+
+
 

@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const merge = require('webpack-merge');
-
+const Dotenv = require('dotenv-webpack');
 const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release');
 
 const config = (isDebug) => {
@@ -40,7 +40,10 @@ const config = (isDebug) => {
                 { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
             ]
         },
-        plugins: [new CheckerPlugin()]
+        plugins: [
+                  new CheckerPlugin(), 
+                  new Dotenv()
+                ]
     });
 
     // Configuration for client-side bundle suitable for running in browsers
