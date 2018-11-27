@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { strava } from 'strava-v3';
 
 export default class Home extends React.Component<RouteComponentProps<{}>, {}> {
     public render() {

@@ -6,16 +6,15 @@ import { AppThunkAction } from './';
 // STATE - This defines the type of data maintained in the Redux store.
 
 export interface StravaDataState {
-    isLoading: boolean;
+    isLoading:       boolean;
     startDateIndex?: number;
-    stravaData: StravaData[];
+    stravaData:      StravaData[];
 }
 
 export interface StravaData {
-    dateFormatted: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
+    name:          string;
+    age:           number;
+    milesThisWeek: number;
 }
 
 // -----------------
