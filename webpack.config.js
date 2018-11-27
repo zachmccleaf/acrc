@@ -74,6 +74,7 @@ const config = (isDebug) => {
         optimization: {
           minimize: !isDevBuild
         },
+        node: { fs: 'empty' },
         devtool: isDevBuild ? 'inline-source-map' : 'source-map'
     });
 

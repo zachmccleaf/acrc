@@ -1,5 +1,5 @@
 {
-  "name": "Server",
+  "name": "acrc",
   "private": true,
   "version": "0.1.0",
   "engines": {
@@ -98,6 +98,10 @@
     "webpack-merge": "4.1.4"
   },
   "dependencies": {
-    "npm": "^6.4.1"
+    "del": "^3.0.0",
+    "net": "^1.0.2",
+    "npm": "^6.4.1",
+    "strava-v3": "^1.14.0",
+    "tls": "0.0.1"
   }
 }

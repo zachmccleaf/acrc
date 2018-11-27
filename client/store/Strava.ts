@@ -7,11 +7,11 @@ import { AppThunkAction } from './';
 
 export interface StravaDataState {
     isLoading:       boolean;
-    startDateIndex?: number;
     stravaData:      StravaData[];
 }
 
 export interface StravaData {
+    id:            string,
     name:          string;
     age:           number;
     milesThisWeek: number;
@@ -23,12 +23,10 @@ export interface StravaData {
 
 interface RequestStravaDataAction {
     type: 'REQUEST_STRAVA_DATA';
-    startDateIndex: number;
 }
 
 interface ReceiveStravaDatasAction {
     type: 'RECEIVE_STRAVA_DATA';
-    startDateIndex: number;
     stravaData: StravaData[];
 }
 
@@ -41,18 +39,21 @@ type KnownAction = RequestStravaDataAction | ReceiveStravaDatasAction;
 // They don't directly mutate state, but they can have external side-effects (such as loading data).
 
 export const actionCreators = {
-    requestStravaData: (startDateIndex: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        // Only load data if it's something we don't already have (and are not already loading)
-        if (startDateIndex !== getState().stravaData.startDateIndex) {
-            let fetchTask = fetch(`api/SampleData/StravaData?startDateIndex=${ startDateIndex }`)
-                .then(response => response.json() as Promise<StravaData[]>)
-                .then(data => {
-                    dispatch({ type: 'RECEIVE_STRAVA_DATA', startDateIndex: startDateIndex, stravaData: data });
-                });
+    requestStravaData: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
 
-            addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
-            dispatch({ type: 'REQUEST_STRAVA_DATA', startDateIndex: startDateIndex });
-        }
+        var strava = require('strava-v3');
+        strava.athletes.get({id:12345},function(err,payload,limits) {
+            console.log(payload);
+        });
+        console.log("strava");  
+        let fetchTask = fetch(`api/StravaData`)
+            .then(response => response.json() as Promise<StravaData[]>)
+            .then(data => {
+                dispatch({ type: 'RECEIVE_STRAVA_DATA', stravaData: data });
+            });
+
+        addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
+        dispatch({ type: 'REQUEST_STRAVA_DATA' });
     }
 };
 
@@ -66,20 +67,14 @@ export const reducer: Reducer<StravaDataState> = (state: StravaDataState = unloa
     switch (action.type) {
         case 'REQUEST_STRAVA_DATA':
             return {
-                startDateIndex: action.startDateIndex,
                 stravaData: state.stravaData,
                 isLoading: true
             };
         case 'RECEIVE_STRAVA_DATA':
-            // Only accept the incoming data if it matches the most recent request. This ensures we correctly
-            // handle out-of-order responses.
-            if (action.startDateIndex === state.startDateIndex) {
-                return {
-                    startDateIndex: action.startDateIndex,
-                    stravaData: action.stravaData,
-                    isLoading: false
-                };
-            }
+            return {
+                stravaData: action.stravaData,
+                isLoading: false
+            };
             break;
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above

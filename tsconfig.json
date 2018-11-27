@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "module": "commonjs",
-    "moduleResolution": "node",
     "target": "es5",
     "jsx": "react",
+    "skipLibCheck": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "skipDefaultLibCheck": true,
     "strict": true,
     "lib": ["es6", "dom"],
     "types": ["webpack-env"],
-    "noImplicitAny": false
+    "noImplicitAny": false,
   },
   "exclude": [
       "bin",
