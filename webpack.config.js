@@ -1,9 +1,11 @@
 /* eslint-disable */
-const path = require('path');
-const webpack = require('webpack');
+const path                 = require('path');
+const webpack              = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-const merge = require('webpack-merge');
+const ExtractTextPlugin    = require('extract-text-webpack-plugin');
+const CheckerPlugin        = require('awesome-typescript-loader').CheckerPlugin;
+const merge                = require('webpack-merge');
+const Dotenv               = require('dotenv-webpack');
 
 const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release');
 
@@ -40,7 +42,8 @@ const config = (isDebug) => {
                 { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
             ]
         },
-        plugins: [new CheckerPlugin()]
+        plugins: [new CheckerPlugin(), 
+                  new Dotenv()]
     });
 
     // Configuration for client-side bundle suitable for running in browsers
@@ -49,26 +52,37 @@ const config = (isDebug) => {
         entry: { 'main-client': './client/boot-client.tsx' },
         module: {
           rules: [
-            { test: /\.css$/,
-              use: [
-                MiniCssExtractPlugin.loader,
-                {
-                  loader: 'css-loader',
-                  options: {
-                    minimize: isDevBuild,
-                    sourceMap: isDevBuild
-                  }
-                }
-              ]
-            }
+            {
+              test: /\.scss$/,
+              use: ExtractTextPlugin.extract({
+                  use: [
+                      {
+                          loader: "css-loader",
+                          options: {
+                              sourceMap: true
+                          }
+                      }, {
+                          loader: "sass-loader",
+                          options: {
+                              sourceMap: true
+                          }
+                      }
+                  ],
+                  publicPath: '/',
+                  // use style-loader in development
+                  fallback: "style-loader"
+              })
+            },
           ]
         },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
         plugins: [
-          new MiniCssExtractPlugin({filename : 'site.css'}),
+          new ExtractTextPlugin({
+            filename: "assets/css/[name].css",
+          }),
           new webpack.DllReferencePlugin({
-              context: __dirname,
-              manifest: require('./wwwroot/dist/vendor-manifest.json')
+            context: __dirname,
+            manifest: require('./wwwroot/dist/vendor-manifest.json')
           })
         ],
         optimization: {

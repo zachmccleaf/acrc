@@ -41,19 +41,21 @@ type KnownAction = RequestStravaDataAction | ReceiveStravaDatasAction;
 export const actionCreators = {
     requestStravaData: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
 
-        var strava = require('strava-v3');
-        strava.athletes.get({id:12345},function(err,payload,limits) {
-            console.log(payload);
-        });
-        console.log("strava");  
-        let fetchTask = fetch(`api/StravaData`)
-            .then(response => response.json() as Promise<StravaData[]>)
-            .then(data => {
-                dispatch({ type: 'RECEIVE_STRAVA_DATA', stravaData: data });
-            });
+        // var strava = require('strava-v3');
+        // strava.athletes.get({id:12345},function(err,payload,limits) {
+        //     console.log(payload);
+        // });
+        // console.log("strava");  
+        // let fetchTask = fetch(`api/StravaData`)
+        //     .then(response => response.json() as Promise<StravaData[]>)
+        //     .then(data => {
+        //         dispatch({ type: 'RECEIVE_STRAVA_DATA', stravaData: data });
+        //     });
 
-        addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
-        dispatch({ type: 'REQUEST_STRAVA_DATA' });
+        // addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
+        // dispatch({ type: 'REQUEST_STRAVA_DATA' });
+
+        console.log("stravaaaaaaa");
     }
 };
 

@@ -1,0 +1,32 @@
+.c-user-table {
+    width: 100%; 
+    margin-bottom: 80px; 
+
+    &__header {
+
+    }
+
+    &__row {
+        
+    }
+
+    &__body {
+
+        .c-user-table__row {
+
+            &:nth-of-type(odd) {
+                background: rgb(196, 191, 191); 
+            }
+        }
+    }
+
+    &__col {
+
+        img {
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            margin-right: 20px; 
+        }
+    }
+}
