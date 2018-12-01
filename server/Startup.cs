@@ -1,25 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Security;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using System.Security.Claims;
+using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
+using System.Security.Claims;
 
 namespace Server
 {
-    public class Startup
+  public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -42,8 +37,8 @@ namespace Server
             .AddCookie()
             .AddOAuth("Strava", options =>
             {
-                options.ClientId     = Configuration["Strava.ClientId"];
-                options.ClientSecret = Configuration["Strava.ClientSecret"];
+                options.ClientId     = Configuration["Strava:ClientId"];
+                options.ClientSecret = Configuration["Strava:ClientSecret"];
                 options.CallbackPath = new PathString("/sign-in-strava");
 
                 options.AuthorizationEndpoint   = "https://www.strava.com/oauth/authorize";
@@ -89,6 +84,8 @@ namespace Server
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
