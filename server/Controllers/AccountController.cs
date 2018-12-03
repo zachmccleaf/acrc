@@ -25,9 +25,10 @@ namespace server.Controllers
       {
         return NotFound();
       }
-      var id = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+      var id   = User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
       var name = User.FindFirst(c => c.Type == ClaimTypes.Name)?.Value;
-      var dto = new UserDTO(id, name);
+      var dto  = new UserDTO(id, name);
+
       return Ok(dto);
     }
   }
